@@ -92,7 +92,7 @@ CheckX86CPUSupport()
 #endif /* NSS_X86_OR_X64 */
 
 /* clang-format off */
-#if defined(__aarch64__) || defined(__arm__)
+#if (defined(__aarch64__) || defined(__arm__)) && !defined(__sun)
 #ifndef __has_include
 #define __has_include(x) 0
 #endif
@@ -114,10 +114,10 @@ static unsigned long (*getauxval)(unsigned long) = NULL;
 #define AT_HWCAP 16
 #endif
 
-#endif /* defined(__aarch64__) || defined(__arm__) */
+#endif /* (defined(__aarch64__) || defined(__arm__)) && !defined(__sun) */
 /* clang-format on */
 
-#if defined(__aarch64__)
+#if defined(__aarch64__) && !defined(__sun)
 // Defines from hwcap.h in Linux kernel - ARM64
 #ifndef HWCAP_AES
 #define HWCAP_AES (1 << 3)
@@ -147,7 +147,7 @@ CheckARMSupport()
     /* aarch64 must support NEON. */
     arm_neon_support_ = disable_arm_neon == NULL;
 }
-#endif /* defined(__aarch64__) */
+#endif /* defined(__aarch64__) && !defined(__sun) */
 
 #if defined(__arm__)
 // Defines from hwcap.h in Linux kernel - ARM
@@ -306,7 +306,7 @@ FreeblInit(void)
 {
 #ifdef NSS_X86_OR_X64
     CheckX86CPUSupport();
-#elif (defined(__aarch64__) || defined(__arm__))
+#elif (defined(__aarch64__) || defined(__arm__)) && !defined(__sun)
     CheckARMSupport();
 #endif
     return PR_SUCCESS;
