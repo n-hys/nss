@@ -127,7 +127,7 @@ CheckX86CPUSupport()
 #endif /* NSS_X86_OR_X64 */
 
 /* clang-format off */
-#if (defined(__aarch64__) || defined(__arm__)) && !defined(TARGET_OS_IPHONE)
+#if (defined(__aarch64__) || defined(__arm__)) && (!defined(TARGET_OS_IPHONE) && !defined(__sun))
 #ifndef __has_include
 #define __has_include(x) 0
 #endif
@@ -165,7 +165,7 @@ static unsigned long getauxval(unsigned long type)
 #define AT_HWCAP 16
 #endif
 
-#endif /* defined(__aarch64__) || defined(__arm__) */
+#endif /* (defined(__aarch64__) || defined(__arm__)) && !defined(__sun) */
 /* clang-format on */
 
 #if defined(__aarch64__)
@@ -508,7 +508,7 @@ FreeblInit(void)
 {
 #ifdef NSS_X86_OR_X64
     CheckX86CPUSupport();
-#elif (defined(__aarch64__) || defined(__arm__))
+#elif (defined(__aarch64__) || defined(__arm__)) && !defined(__sun)
     CheckARMSupport();
 #elif (defined(__powerpc__))
     CheckPPCSupport();
