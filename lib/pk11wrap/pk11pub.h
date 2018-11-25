@@ -847,12 +847,14 @@ SECStatus PK11_AEADRawOp(PK11Context *context, void *params, int paramslen,
                          unsigned char *out, int *outlen,
                          int maxout, const unsigned char *in, int inlen);
 /* NSS builds the mechanism specific params */
+#if CRYPTOKI_VERSION_MAJOR >= 3
 SECStatus PK11_AEADOp(PK11Context *context, CK_GENERATOR_FUNCTION ivGen,
                       int fixedbits, unsigned char *iv, int ivlen,
                       const unsigned char *aad, int aadlen,
                       unsigned char *out, int *outlen,
                       int maxout, unsigned char *tag, int taglen,
                       const unsigned char *in, int inlen);
+#endif
 
 SECStatus PK11_Finalize(PK11Context *context);
 SECStatus PK11_DigestFinal(PK11Context *context, unsigned char *data,
